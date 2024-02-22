@@ -7,6 +7,7 @@ import Signup from "./pages/signup/Signup";
 import Create from "./pages/create/Create";
 import Project from "./pages/project/Project";
 import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
 
 // styles
 import "./App.css";
@@ -14,6 +15,7 @@ import "./App.css";
 function App() {
   return (
     <div className="App">
+      <Sidebar></Sidebar>
       <div className="container">
         <Navbar></Navbar>
         <Routes>
