@@ -1,11 +1,12 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
-// components
+// pages and components
 import Dashboard from "./pages/dashboard/Dashboard";
 import Login from "./pages/login/Login";
 import Signup from "./pages/signup/Signup";
 import Create from "./pages/create/Create";
 import Project from "./pages/project/Project";
+import Navbar from "./components/Navbar";
 
 // styles
 import "./App.css";
@@ -14,6 +15,7 @@ function App() {
   return (
     <div className="App">
       <div className="container">
+        <Navbar></Navbar>
         <Routes>
           <Route path="/" element={<Dashboard />}></Route>
           <Route path="/create" element={<Create />}></Route>
