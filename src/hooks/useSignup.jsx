@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { myFSAuth, myFSStorage } from "../firebase/config";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useAuthContext } from "./useAuthContext";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 // Custom hook to handle signup logic
 export const useSignup = () => {
@@ -13,7 +14,7 @@ export const useSignup = () => {
   const { dispatch } = useAuthContext(); // Accessing the authentication context
 
   // Function to handle user signup
-  const handleSignup = async (name, email, password, thumbnail) => {
+  const handleSignup = async (email, password, displayName, thumbnail) => {
     setIsPending(true);
     setError(null);
 
@@ -33,10 +34,19 @@ export const useSignup = () => {
 
       // upload user thumbnail
       const uploadPath = `thumbnails/${res.user.uid}/${thumbnail.name}`;
-      const img = await myFSStorage.ref(uploadPath).put(thumbnail);
+      const img = await uploadBytes(ref(myFSStorage, uploadPath), thumbnail);
+
+      // Get download URL after successful upload
+      const imgUrl = await getDownloadURL(img.ref);
+
+      // Use imgUrl as needed in your application
+      console.log("Image uploaded successfully. Download URL:", imgUrl);
 
       // Update user display name
-      await updateProfile(res.user, { displayName: name, photoURL: null });
+      await updateProfile(res.user, {
+        displayName: displayName,
+        photoURL: imgUrl,
+      });
 
       // Dispatch login action to update authentication state
       dispatch({ type: "LOGIN", payload: res.user });
