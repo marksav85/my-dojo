@@ -1,9 +1,10 @@
 // Import necessary dependencies from React and Firebase
 import { useState, useEffect } from "react";
-import { myFSAuth, myFSStorage } from "../firebase/config";
+import { myFSAuth, myFSStorage, myFSProject } from "../firebase/config";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useAuthContext } from "./useAuthContext";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { collection, doc, setDoc } from "firebase/firestore";
 
 // Custom hook to handle signup logic
 export const useSignup = () => {
@@ -44,6 +45,17 @@ export const useSignup = () => {
 
       // Update user display name
       await updateProfile(res.user, {
+        displayName: displayName,
+        photoURL: imgUrl,
+      });
+
+      // create a user document in Firestore
+      const authUserUID = res.user.uid;
+      const userDocRef = doc(collection(myFSProject, "users"), authUserUID);
+
+      // use the reference to the created document to set additional data
+      await setDoc(userDocRef, {
+        online: true,
         displayName: displayName,
         photoURL: imgUrl,
       });
