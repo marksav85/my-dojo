@@ -21,7 +21,7 @@ export const useLogin = () => {
       const res = await signInWithEmailAndPassword(myFSAuth, email, password);
 
       // update online status
-      const { uid } = res.user.uid;
+      const uid = res.user.uid;
       // Assuming you have the UID in the variable 'uid'
       const userDocRef = doc(myFSProject, "users", uid);
 
