@@ -1,7 +1,16 @@
 import { useState } from "react";
+import Select from "react-select";
 
 // styles
 import "./Create.css";
+
+// form categories
+const categories = [
+  { value: "development", label: "Development" },
+  { value: "design", label: "Design" },
+  { value: "sales", label: "Sales" },
+  { value: "marketing", label: "Marketing" },
+];
 
 export default function Create() {
   // form field values
@@ -48,14 +57,15 @@ export default function Create() {
         </label>
         <label>
           <span>Project category:</span>
+          <Select
+            value={category}
+            onChange={(selectedOption) => setCategory(selectedOption)}
+            options={categories}
+            required
+          />
         </label>
         <label>
           <span>Assign to:</span>
-          <input
-            type="text"
-            value={assignedUsers}
-            onChange={(e) => setAssignedUsers(e.target.value)}
-          />
         </label>
 
         <button className="btn">Add project</button>
