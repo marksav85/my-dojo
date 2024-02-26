@@ -24,6 +24,9 @@ export default function OnlineUsers() {
         documents.map((user) => (
           // Each user is rendered as a list item with a unique key
           <div key={user.id} className="user-list-item">
+            {/* Display a green dot if the user is online */}
+            {user.online && <span className="online-user"></span>}
+
             {/* Display the user's display name */}
             <span>{user.displayName}</span>
 
