@@ -18,14 +18,14 @@ export const useCollection = (
   const [error, setError] = useState(null);
 
   // use useRef to store the query to avoid re-rendering loop in useEffect dependency array
-  const q = useRef(collectionQuery).current;
-  const o = useRef(collectionOrder).current;
+  const q = useRef(null);
+  const o = useRef(null);
 
   useEffect(() => {
     // Update the ref when collectionQuery changes
     q.current = collectionQuery;
     o.current = collectionOrder;
-  }, [collectionQuery, q, collectionOrder, o]);
+  }, [collectionQuery, collectionOrder]);
 
   useEffect(() => {
     // collection ref
