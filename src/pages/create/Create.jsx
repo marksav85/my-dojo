@@ -84,6 +84,7 @@ export default function Create() {
             options={users}
             onChange={(selectedUser) => setAssignedUsers(selectedUser)}
             isMulti
+            required
           />
         </label>
 
