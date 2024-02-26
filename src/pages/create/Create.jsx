@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import Select from "react-select";
+import { Timestamp } from "firebase/firestore";
+
+// hooks
 import { useCollection } from "../../hooks/useCollection";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 // styles
 import "./Create.css";
@@ -14,6 +18,7 @@ const categories = [
 ];
 
 export default function Create() {
+  const { user } = useAuthContext();
   const { documents } = useCollection("users");
   const [users, setUsers] = useState([]);
 
@@ -27,16 +32,43 @@ export default function Create() {
   // get users from the database
   useEffect(() => {
     if (documents) {
-      const options = documents.map((user) => {
-        return { value: user, label: user.displayName };
-      });
-      setUsers(options);
+      setUsers(
+        documents.map((user) => {
+          return { value: { ...user, id: user.id }, label: user.displayName };
+        })
+      );
     }
   }, [documents]);
 
   // handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const assignedUsersList = assignedUsers.map((u) => {
+      return {
+        displayName: u.value.displayName,
+        photoURL: u.value.photoURL,
+        id: u.value.id,
+      };
+    });
+
+    const createdBy = {
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      id: user.uid,
+    };
+
+    const project = {
+      name,
+      details,
+      category: category.value,
+      dueDate: Timestamp.fromDate(new Date(dueDate)),
+      assignedUsersList,
+      createdBy,
+      comments: [],
+    };
+
+    console.log(project);
   };
 
   return (
@@ -47,8 +79,8 @@ export default function Create() {
           <span>Project name:</span>
           <input
             type="text"
-            value={name}
             onChange={(e) => setName(e.target.value)}
+            value={name}
             required
           />
         </label>
