@@ -2,6 +2,7 @@
 import Avatar from "../../components/Avatar";
 import { useFirestore } from "../../hooks/useFirestore";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { useNavigate } from "react-router-dom";
 
 // styles
 import "./Project.css";
@@ -14,9 +15,13 @@ export default function ProjectSummary({ project }) {
   // Retrieve user information from the authentication context
   const { user } = useAuthContext();
 
+  // Use the useNavigate hook to redirect the user after deleting a project
+  const navigate = useNavigate();
+
   // Handle click event to delete the project
   const handleClick = () => {
     deleteDocument(project.id);
+    navigate("/");
   };
 
   return (
