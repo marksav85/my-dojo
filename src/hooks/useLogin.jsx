@@ -42,7 +42,7 @@ export const useLogin = () => {
     } catch (err) {
       if (!isCancelled) {
         setIsPending(false);
-        setError(err.message);
+        setError("Invalid credentials");
       }
     }
   };
